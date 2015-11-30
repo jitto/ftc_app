@@ -34,28 +34,28 @@ public class HSATeleOp extends OpMode {
 	public void loop() {
 		float throttle = -gamepad1.left_stick_y;
 		float direction = gamepad1.left_stick_x;
-		double shoulderMotorPower = powWithSign(gamepad2.left_stick_y, 2);
-		double elbowMotorPower = powWithSign(gamepad2.right_stick_y, 2);
+		double shoulderMotorPower = powWithSign(gamepad2.left_stick_y, 1);
+		double elbowMotorPower = powWithSign(gamepad2.right_stick_y, 1);
 
-        double right = powWithSign(throttle - direction, 2);
-		double left = powWithSign(throttle + direction, 2);
+		double right = powWithSign(throttle - direction, 1);
+		double left = powWithSign(throttle + direction, 1);
 
 		motorRight.setPower(right);
 		motorLeft.setPower(left);
 		motorShoulder.setPower(shoulderMotorPower);
 		motorElbow.setPower(elbowMotorPower);
 
-        double basketMove = gamepad2.x ? basketDelta : gamepad2.b ? -basketDelta : 0;
-        basketPosition = Range.clip(basketPosition + basketMove, BASKET_MIN_RANGE, BASKET_MAX_RANGE);
+		double basketMove = gamepad2.x ? basketDelta : gamepad2.b ? -basketDelta : 0;
+		basketPosition = Range.clip(basketPosition + basketMove, BASKET_MIN_RANGE, BASKET_MAX_RANGE);
 		basket.setPosition(basketPosition);
 
-        telemetry.addData("left " + String.format("%.2f", left) + " right ", String.format("%.2f", right));
-        telemetry.addData("shoulder " + String.format("%.2f", shoulderMotorPower) + " elbow ", String.format("%.2f", elbowMotorPower));
+		telemetry.addData("left " + String.format("%.2f", left) + " right ", String.format("%.2f", right));
+		telemetry.addData("shoulder " + String.format("%.2f", shoulderMotorPower) + " elbow ", String.format("%.2f", elbowMotorPower));
 		telemetry.addData("basket ", String.format("%.2f", basketPosition));
 	}
 
-    private double powWithSign(float number, int scalePower) {
-        double scaledValue = Math.pow(Range.clip(number, -1.0, 1.0), scalePower);
-        return (number < 0) ? -scaledValue : scaledValue;
-    }
+	private double powWithSign(float number, int scalePower) {
+		double scaledValue = Math.pow(Range.clip(number, -1.0, 1.0), scalePower);
+		return (number < 0) ? -scaledValue : scaledValue;
+	}
 }
